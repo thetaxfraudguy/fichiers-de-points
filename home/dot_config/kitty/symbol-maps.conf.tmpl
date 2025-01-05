@@ -1,0 +1,5 @@
+{{- $font := .terminal.symbols.font -}}
+
+{{ range .terminal.symbols.unicodes -}}
+symbol_map {{ . }} {{ $font }}
+{{ end -}}

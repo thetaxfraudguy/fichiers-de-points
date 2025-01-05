@@ -1,0 +1,31 @@
+theme = tokyonight-storm
+
+font-family = {{ .terminal.fonts.regular }}
+font-family-italic = {{ .terminal.fonts.italic }}
+font-family-bold = {{ .terminal.fonts.bold }}
+font-family-bold-italic = {{ .terminal.fonts.bold_italic }}
+
+font-size = {{ .terminal.fonts.size }}
+font-thicken = true
+adjust-cell-height = -2
+
+cursor-style = block
+shell-integration-features = no-cursor
+
+macos-titlebar-style = native
+macos-option-as-alt = true
+
+window-padding-x = 5
+window-padding-y = 10
+
+keybind = ctrl+n>u=new_split:up
+keybind = ctrl+n>d=new_split:down
+keybind = ctrl+n>l=new_split:left
+keybind = ctrl+n>r=new_split:right
+
+keybind = ctrl+u=goto_split:top
+keybind = ctrl+d=goto_split:bottom
+keybind = ctrl+l=goto_split:left
+keybind = ctrl+r=goto_split:right
+
+config-file = symbol-maps

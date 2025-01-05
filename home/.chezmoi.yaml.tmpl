@@ -1,0 +1,13 @@
+{{- $gemail := promptStringOnce . "gemail" "Email github email" -}}
+{{- $guser := promptStringOnce . "guser" "Enter github username" -}}
+
+diff:
+  exclude: ["scripts"]
+
+edit:
+  command: "nvim"
+
+data:
+  guser: {{ $guser }}
+  gemail: {{ $gemail }}
+

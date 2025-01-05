@@ -1,0 +1,65 @@
+---
+packages:
+  darwin:
+    taps:
+      - 'spacelift-io/spacelift'
+    brews:
+      - 'awscli'
+      - 'bash'
+      - 'bash-completion'
+      - 'bat'
+      - 'fd'
+      - 'fzf'
+      - 'fx'
+      - 'gh'
+      - 'git'
+      - 'jq'
+      - 'kubectl'
+      - 'lazygit'
+      - 'mise'
+      - 'neovim'
+      - 'qemu'
+      - 'ripgrep'
+      - 'shellcheck'
+      - 'spacelift-io/spacelift/spacectl'
+      - 'sqlite'
+      - 'starship'
+      - 'terraform-docs'
+      - 'tree'
+      - 'wget'
+      - 'yamllint'
+      - 'zsh'
+    casks:
+      - '1password-cli'
+      - 'aws-vault'
+      - 'font-fira-code'
+      - 'font-symbols-only-nerd-font'
+      - 'ghostty'
+      - 'session-manager-plugin'
+
+terminal:
+  fonts:
+    regular: 'Fira Code Regular'
+    italic: 'Fira Code Italic'
+    bold: 'Fira Code Bold'
+    bold_italic: 'Fira Code Bold Italic'
+    size: '16.0'
+  symbols:
+    font: Symbols Nerd Font 
+    unicodes:
+      - 'U+E5FA-U+E6AC' # Seti UI 
+      - 'U+E700-U+E7C5' # Devicons
+      - 'U+F000-U+F2E0' # Font Awesome 
+      - 'U+E200-U+E2A9' # Font Awesome Extension
+      - 'U+F0001-U+F1AF0' # Material Design Icons
+      - 'U+E300-U+E3E3' # Weather
+      - 'U+F400-U+F532,U+2665,U+26A1' # Octicons
+      - 'U+E0A0-U+E0A2,U+E0B0-U+E0B3' # Powerline symbols 
+      - 'U+E0A3,U+E0B4-U+E0C8,U+E0CA,U+E0CC-U+E0D4' # Powerline extra 
+      - 'U+23FB-U+23FE,U+2B58' # IEC power 
+      - 'U+F300-U+F32F' # font logos
+      - 'U+E000-U+E00A' # pomicons
+      - 'U+EA60-U+EBEB' # codicons
+      - 'U+E6B2' # toml icon 
+      - 'U+E276C-U+E2771' # heavy angle brackets
+      - 'U+2500-U+259F' # box drawing

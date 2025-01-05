@@ -1,0 +1,36 @@
+[user]
+	email = {{ .gemail }}
+	name = {{ .guser }}
+
+[alias]
+    co = checkout
+    b = branch
+    lg = log --pretty=format:%h
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    ui = true
+
+[core]
+    excludesfile = ~/.gitignore
+    editor = nvim
+
+[grep]
+    extendRegexp = true
+    lineNumber = true
+
+[push]
+    default = simple
+
+{{- if eq .chezmoi.os "darwin" }}
+[credential]
+	helper = osxkeychain
+{{- end }}
+
+[init]
+	defaultBranch = main
