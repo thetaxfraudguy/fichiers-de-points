@@ -1,6 +1,7 @@
 [user]
 	email = {{ .gemail }}
 	name = {{ .guser }}
+  signingkey = {{ .gsignkey }}
 
 [alias]
     co = checkout
@@ -34,3 +35,10 @@
 
 [init]
 	defaultBranch = main
+
+[commit]
+  gpgsign = true
+
+[tag]
+  gpgSign = true
+

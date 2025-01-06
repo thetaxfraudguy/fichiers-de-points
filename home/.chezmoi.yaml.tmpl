@@ -1,13 +1,11 @@
 {{- $gemail := promptStringOnce . "gemail" "Email github email" -}}
 {{- $guser := promptStringOnce . "guser" "Enter github username" -}}
-
-diff:
-  exclude: ["scripts"]
-
+{{- $gsignkey := promptStringOnce . "gsignkey" "ID of GPG key used to sign git commits" -}}
 edit:
   command: "nvim"
 
 data:
   guser: {{ $guser }}
   gemail: {{ $gemail }}
+  gsignkey: {{ $gsignkey }}
 
