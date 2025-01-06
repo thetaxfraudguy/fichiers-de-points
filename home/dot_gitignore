@@ -2,6 +2,7 @@
 .idea
 .vscode/
 .tool-versions
+.mise.toml
 
 *__pycache__/
 *.py[cod]
