@@ -3,6 +3,7 @@
 .vscode/
 .tool-versions
 .mise.toml
+mise.toml
 
 *__pycache__/
 *.py[cod]

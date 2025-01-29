@@ -34,6 +34,7 @@ packages:
     casks:
       - '1password-cli'
       - 'aws-vault'
+      - 'docker'
       - 'font-fira-code'
       - 'font-symbols-only-nerd-font'
       - 'ghostty'
