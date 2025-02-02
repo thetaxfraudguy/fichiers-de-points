@@ -2,3 +2,9 @@
 python = "latest"
 opentofu = "latest"
 terraform = "latest"
+node = "latest"
+yarn = "latest"
+go = "latest"
+
+[settings]
+idiomatic_version_file = false

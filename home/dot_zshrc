@@ -31,6 +31,10 @@ s3cat() { aws s3 cp "s3://$1" -; }
 
 complete -C aws_completer aws
 
+# Chezmoi
+alias chd="chezmoi diff"
+alias cha="chezmoi apply"
+
 # Docker
 alias d="docker"
 alias dc="docker-compose"
@@ -42,6 +46,8 @@ dlogin () { docker exec -it $1 /bin/sh; }
 drun () { docker run -it --rm $1 /bin/sh; }
 
 # Git
+export GPG_TTY=$(tty)
+
 alias g="git"
 alias gco="git checkout"
 alias gcob="git checkout -b"
