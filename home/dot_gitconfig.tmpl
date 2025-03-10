@@ -1,44 +1,80 @@
 [user]
-	email = {{ .gemail }}
-	name = {{ .guser }}
+  email = {{ .gemail }}
+  name = {{ .guser }}
   signingkey = {{ .gsignkey }}
 
-[alias]
-    co = checkout
-    b = branch
-    lg = log --pretty=format:%h
+[core]
+  editor = nvim
+  excludesfile = ~/.gitignore
 
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
+[alias]
+  b = branch
+  co = checkout
+  lg = log --pretty=format:%h
+
+[branch]
+  sort = committerdate
 
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-    ui = true
+  branch = auto
+  diff = auto
+  status = auto
+  ui = true
 
-[core]
-    excludesfile = ~/.gitignore
-    editor = nvim
-
-[grep]
-    extendRegexp = true
-    lineNumber = true
-
-[push]
-    default = simple
-
-{{- if eq .chezmoi.os "darwin" }}
-[credential]
-	helper = osxkeychain
-{{- end }}
-
-[init]
-	defaultBranch = main
+[column]
+  ui = auto
 
 [commit]
   gpgsign = true
+  verbose = true
+
+{{- if eq .chezmoi.os "darwin" }}
+[credential]
+  helper = osxkeychain
+{{- end }}
+
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
+
+[fetch]
+  all = true
+  prune = true
+  pruneTags = true
+
+[grep]
+  extendRegexp = true
+  lineNumber = true
+
+[help]
+  autocorrect = prompt
+
+[init]
+  defaultBranch = main
+
+[pull]
+  rebase = true
+
+[push]
+  autoSetupRemote = true
+  default = simple
+  followTags = true
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+
+[rerere]
+  autoupdate = true
+  enabled = true
 
 [tag]
   gpgSign = true
+  sort = version:refname
+
+[url "ssh://git@github.com/"]
+  insteadOf = https://github.com/
 
