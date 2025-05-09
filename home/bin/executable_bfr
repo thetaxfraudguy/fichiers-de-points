@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# For Big F***in Repos
+# Usage: bfr <git-repo-url> [target-dir] [initial-folder ...]
+
+set -euo pipefail
+
+REPO_URL="$1"
+shift
+
+# Optional second argument: target directory name
+if [[ $# -gt 0 && "$1" != /* && "$1" != git@* && "$1" != http* ]]; then
+  TARGET_DIR="$1"
+  shift
+else
+  TARGET_DIR=$(basename "$REPO_URL" .git)
+fi
+
+# Remaining args are sparse-checkout folders
+SPARSE_FOLDERS=("$@")
+
+# Clone with filtering and sparse support
+git clone --filter=blob:none --sparse "$REPO_URL" "$TARGET_DIR"
+
+# Configure sparse-checkout inside the repo
+(
+  cd "$TARGET_DIR"
+  git sparse-checkout init --cone
+  if [[ ${#SPARSE_FOLDERS[@]} -gt 0 ]]; then
+    git sparse-checkout set "${SPARSE_FOLDERS[@]}"
+  else
+    git sparse-checkout set .
+  fi
+)
+
+echo "✅ Cloned into $TARGET_DIR with sparse-checkout: ${SPARSE_FOLDERS[*]:-. (root)}"
