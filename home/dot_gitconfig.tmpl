@@ -12,22 +12,6 @@
   co = checkout
   lg = log --pretty=format:%h
 
-  # for bigguns
-  focus = "!f() { \
-    git sparse-checkout set \"$@\" && \
-    git reflog expire --expire=now --all && \
-    git gc --prune=now --aggressive && \
-    echo Focused on: \"$@\"; \
-  }; f"
-
-  clearfocus = "!g() { \
-    git sparse-checkout set --clear && \
-    git clean -fdx && \
-    git reflog expire --expire=now --all && \
-    git gc --prune=now --aggressive && \
-    echo Cleared sparse-checkout; \
-  }; g"
-
 [branch]
   sort = committerdate
 
