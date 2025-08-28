@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOCKER_CMD="/usr/local/bin/docker"
+DOCKER_CMD="/Applications/Docker.app/Contents/Resources/bin/docker"
 
 _docker_start () {
   if ! $DOCKER_CMD info >/dev/null 2>&1; then
