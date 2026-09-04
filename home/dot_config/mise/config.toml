@@ -5,6 +5,7 @@ terraform = "latest"
 node = "latest"
 yarn = "latest"
 go = "latest"
+java = "25"
 
 [settings]
 idiomatic_version_file = false

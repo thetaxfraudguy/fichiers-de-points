@@ -1,0 +1,112 @@
+#!/bin/zsh
+# Report on zsh startup timings logged by .zshrc.
+#
+# Usage: zsh-startup-report [-n COUNT] [-s SLOW_MS] [-f] [-t]
+#   -n  how many recent startups to list (default 20)
+#   -s  threshold in ms for calling a startup slow (default 1000)
+#   -f  forensics: dig the unified log around the slowest recent startup
+#   -t  trim the log to the most recent 2000 entries
+
+emulate -L zsh
+setopt err_return pipe_fail
+
+local log=${XDG_STATE_HOME:-$HOME/.local/state}/zsh-startup.log
+local -i count=20 slow=1000
+local -i forensics=0 trim=0
+
+while getopts 'n:s:ft' opt; do
+  case $opt in
+    n) count=$OPTARG ;;
+    s) slow=$OPTARG ;;
+    f) forensics=1 ;;
+    t) trim=1 ;;
+    *) print -u2 "usage: $0 [-n COUNT] [-s SLOW_MS] [-f] [-t]"; return 2 ;;
+  esac
+done
+
+if [[ ! -s $log ]]; then
+  print -u2 "No startup log at $log — open a new shell first."
+  return 1
+fi
+
+if (( trim )); then
+  local tmp=$log.trim.$$
+  tail -n 2000 $log > $tmp && mv $tmp $log
+  print "Trimmed $log to the most recent 2000 entries."
+fi
+
+print -- "=== last $count startups ($log) ==="
+tail -n $count $log | while read -r line; do
+  local -i total=${${${(M)${(z)line}:#total=*}#total=}:-0}
+  if (( total >= slow )); then
+    print -- "SLOW  $line"
+  else
+    print -- "      $line"
+  fi
+done
+
+print
+print -- "=== totals ==="
+awk '
+  { for (i = 1; i <= NF; i++) if ($i ~ /^total=/) { split($i, a, "="); t = a[2]
+      n++; sum += t; if (t > max) { max = t; worst = $0 }
+      if (t >= SLOW) s++ } }
+  END {
+    if (!n) { print "  no parseable entries"; exit }
+    printf "  shells logged: %d\n", n
+    printf "  mean:          %.0f ms\n", sum / n
+    printf "  worst:         %.0f ms\n", max
+    printf "  over %d ms:  %d (%.0f%%)\n", SLOW, s, s * 100 / n
+    print  "  worst entry:   " worst
+  }
+' SLOW=$slow $log
+
+print
+print -- "=== mean ms per section (slow startups only, >= ${slow}ms) ==="
+awk '
+  { slowrun = 0
+    for (i = 1; i <= NF; i++) if ($i ~ /^total=/) { split($i, a, "="); if (a[2] >= SLOW) slowrun = 1 }
+    if (!slowrun) next
+    runs++
+    for (i = 1; i <= NF; i++) if ($i ~ /^[a-z]+=[0-9]/ && $i !~ /^total=/) {
+      split($i, a, "="); sum[a[1]] += a[2]; seen[a[1]] = 1 } }
+  END {
+    if (!runs) { print "  none yet — nothing has been slow since logging started"; exit }
+    for (k in seen) printf "  %-10s %8.0f ms\n", k, sum[k] / runs | "sort -k2 -rn"
+  }
+' SLOW=$slow $log
+
+# Sections only cover time inside .zshrc. A slow shell with a small total means
+# the stall was upstream (Ghostty -> login -> PAM) or in the first prompt render.
+if (( forensics )); then
+  local worst_ts=$(awk '
+    { for (i = 1; i <= NF; i++) if ($i ~ /^total=/) { split($i, a, "="); if (a[2] > max) { max = a[2]; ts = $1 } } }
+    END { print ts }' $log)
+
+  print
+  print -- "=== forensics around worst startup ($worst_ts) ==="
+  # 2026-09-04T15:12:33-0700 -> "2026-09-04 15:12:23" .. "2026-09-04 15:12:43"
+  local base=${worst_ts%%[-+]????}
+  local day=${base%%T*} hms=${base##*T}
+  local start=$(date -j -v-20S -f '%Y-%m-%d %H:%M:%S' "$day $hms" '+%Y-%m-%d %H:%M:%S' 2>/dev/null)
+  local end=$(date -j -v+10S -f '%Y-%m-%d %H:%M:%S' "$day $hms" '+%Y-%m-%d %H:%M:%S' 2>/dev/null)
+
+  if [[ -z $start || -z $end ]]; then
+    print -u2 "  could not parse timestamp $worst_ts"
+  else
+    print -- "  window: $start .. $end"
+    log show --start "$start" --end "$end" --style compact \
+      --predicate 'process == "login" OR process == "ghostty" OR process == "opendirectoryd" OR process == "wdavdaemon" OR process == "wdavdaemon_enterprise" OR process == "com.huntress.sysext"' \
+      2>/dev/null | head -60 || print -u2 "  log show failed (may need sudo or the window has aged out)"
+  fi
+fi
+
+print
+print -- "=== on-access scanners (tax every exec and file stat) ==="
+systemextensionsctl list 2>/dev/null | awk '/^\*/ { $1=""; $2=""; print "  active:  " $0 }'
+local -i pending=$(systemextensionsctl list 2>/dev/null | grep -c 'waiting to uninstall')
+(( pending )) && print "  pending uninstall (needs a reboot to clear): $pending"
+if (( $+commands[mdatp] )); then
+  print -n "  defender real-time protection: "; mdatp health --field real_time_protection_enabled 2>/dev/null
+fi
+print -n "  uptime: "; uptime | sed -E 's/^.*up //; s/,[[:space:]]+[0-9]+ users?.*//'
