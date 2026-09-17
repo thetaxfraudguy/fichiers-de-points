@@ -29,6 +29,7 @@ packages:
       - 'starship'
       - 'terraform-docs'
       - 'tree'
+      - 'tree-sitter-cli'
       - 'wget'
       - 'yamllint'
       - 'zsh'
