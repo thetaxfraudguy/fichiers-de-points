@@ -24,7 +24,6 @@ packages:
       - 'qemu'
       - 'ripgrep'
       - 'shellcheck'
-      - 'spacelift-io/spacelift/spacectl'
       - 'sqlite'
       - 'starship'
       - 'terraform-docs'
@@ -36,10 +35,12 @@ packages:
     casks:
       - '1password-cli'
       - 'aws-vault'
+      - 'claude-code'
       - 'font-fira-code'
       - 'font-symbols-only-nerd-font'
       - 'ghostty'
       - 'session-manager-plugin'
+      - 'spacelift-io/spacelift/spacectl'
 
 terminal:
   fonts:
