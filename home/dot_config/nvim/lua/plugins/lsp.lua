@@ -6,7 +6,6 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     opts = {
       ensure_installed = { "terraformls", "gopls", "pyright", "lua_ls" },
-      automatic_installation = true,
     },
   },
 
